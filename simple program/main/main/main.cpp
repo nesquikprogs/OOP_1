@@ -11,6 +11,11 @@ int main() {
 
     double hypotenuse, leg1, leg2, radius; // Объявляем переменные для гипотенузы, катетов и радиуса
 
+    // Добавление UI
+    cout << "Task #15. Completed by Danil Aleksandrov from the VMK-22 group" << endl;
+    cout << "\n";
+    cout << "Data entry:" << endl;
+
     // Ввод данных
     cout << "Hypotenuse: ";
     cin >> hypotenuse;
@@ -42,10 +47,15 @@ int main() {
     // Проверка, что радиус не отрицателен
     assert(radius >= 0);  // Проверка 3
 
+    // Добавление UI
+    cout << "\n";
+    cout << "Answer:" << endl;
+
     // Выводим результаты с точностью до 3 знаков
     cout << fixed << setprecision(3);
     cout << "Leg 2: " << leg2 << endl;
     cout << "Radius: " << radius << endl;
 
+    cout << "\n";
     return 0; // Завершаем программу
 }
