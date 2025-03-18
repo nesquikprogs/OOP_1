@@ -1,13 +1,12 @@
 #include "triangle.h"
-#include <cmath> // Для sqrt и pow
+#include <cmath> // РґР»СЏ sqrt Рё pow
 
-// Вычисление второго катета
+// Р’С‹С‡РёСЃР»РµРЅРёРµ РІС‚РѕСЂРѕРіРѕ РєР°С‚РµС‚Р°
 double calculateLeg(double hypotenuse, double leg1) {
     return sqrt(pow(hypotenuse, 2) - pow(leg1, 2));
 }
 
-// Вычисление радиуса вписанной окружности
+// Р’С‹С‡РёСЃР»РµРЅРёРµ СЂР°РґРёСѓСЃР° РІРїРёСЃР°РЅРЅРѕР№ РѕРєСЂСѓР¶РЅРѕСЃС‚Рё
 double calculateRadius(double hypotenuse, double leg1, double leg2) {
     return (leg1 + leg2 - hypotenuse) / 2;
 }
-
