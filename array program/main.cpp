@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <cassert>
 #include "computations.h"
 
 using namespace std;
@@ -20,10 +21,36 @@ void printArray(const double* arr, int size) {
     cout << endl;
 }
 
+// Функция для тестирования computeProduct с помощью assert
+void testComputeProduct() {
+    // Тест 1: Ожидаемое произведение 1.0 * 2.0 * 3.0 * 4.0 = 24.0
+    double arr1[] = {1.0, 2.0, 3.0, 4.0};
+    assert(computeProduct(arr1, 4) == 24.0);
+
+    // Тест 2: Ожидаемое произведение 0.5 * 2.0 * 2.0 = 2.0
+    double arr2[] = {0.5, 2.0, 2.0};
+    assert(computeProduct(arr2, 3) == 2.0);
+
+    // Тест 3: Ожидаемое произведение 10.0 (один элемент)
+    double arr3[] = {10.0};
+    assert(computeProduct(arr3, 1) == 10.0);
+
+    // Тест 4: Ожидаемое произведение 0.0 * 5.0 * 6.0 = 0.0
+    double arr4[] = {0.0, 5.0, 6.0};
+    assert(computeProduct(arr4, 3) == 0.0);
+
+    cout << "Все тесты прошли успешно!" << endl;
+}
+
 int main() {
-    setlocale(LC_ALL, "Russian"); // Установка русского языка в консоли
+    setlocale(LC_ALL, "ru_RU.UTF-8");
+
+ // Установка русского языка в консоли
     srand(time(0)); // Инициализация генератора случайных чисел
 
+    // Выполнение тестов
+    testComputeProduct();
+    
     int n;
     double minVal, maxVal;
     
