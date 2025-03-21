@@ -1,25 +1,11 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <cassert>
+#include <cassert>  // Для использования assert
 #include "computations.h"
 
 using namespace std;
-
-// Функция для заполнения массива случайными числами
-void fillArray(double* arr, int size, double minVal, double maxVal) {
-    for (int i = 0; i < size; i++) {
-        arr[i] = minVal + (maxVal - minVal) * (rand() / (double)RAND_MAX);
-    }
-}
-
-// Функция для вывода массива
-void printArray(const double* arr, int size) {
-    for (int i = 0; i < size; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-}
+using namespace ArrayUtils;  // Подключаем пространство имен ArrayUtils
 
 // Функция для тестирования computeProduct с помощью assert
 void testComputeProduct() {
@@ -43,9 +29,7 @@ void testComputeProduct() {
 }
 
 int main() {
-    setlocale(LC_ALL, "ru_RU.UTF-8");
-
- // Установка русского языка в консоли
+    setlocale(LC_ALL, "ru_RU.UTF-8"); // Установка русской локали для вывода текста в консоль
     srand(time(0)); // Инициализация генератора случайных чисел
 
     // Выполнение тестов
@@ -67,7 +51,7 @@ int main() {
     fillArray(arr, n, minVal, maxVal);
     
     // Вывод массива
-    cout << "Сгенерированный массив: ";
+    cout << "Сгенерированный массив: " << endl;
     printArray(arr, n);
     
     // Вычисление и вывод произведения элементов
