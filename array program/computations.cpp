@@ -2,47 +2,57 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>  // Для обработки исключений
+#include <vector>
 using namespace std;
 
 // Функция для вычисления произведения элементов массива
-double computeProduct(const double* arr, int size) {
+double computeProduct(const std::vector<double>& arr) {
+    if (arr.empty()) {
+        throw invalid_argument("Массив не может быть пустым.");
+    }
+
     double product = 1.0;
-    for (int i = 0; i < size; i++) {
-        product *= arr[i];
+    for (double val : arr) {
+        product *= val;
     }
     return product;
 }
 
 // Функция для записи массива в файл
-void writeArrayToFile(const double* arr, int size, const char* filename) {
+void writeArrayToFile(const std::vector<double>& arr, const char* filename) {
+    if (arr.empty()) {
+        throw invalid_argument("Массив не может быть пустым.");
+    }
+
     ofstream outFile(filename); // Открываем файл для записи
     if (!outFile) {
-        cerr << "Не удалось открыть файл для записи!" << endl;
-        return;
+        throw runtime_error("Не удалось открыть файл для записи!");
     }
 
     // Записываем размер массива, затем сами элементы
-    outFile << size << endl;
-    for (int i = 0; i < size; i++) {
-        outFile << arr[i] << endl;
+    outFile << arr.size() << endl;
+    for (double val : arr) {
+        outFile << val << endl;
     }
 
     outFile.close();
 }
 
 // Функция для чтения массива из файла
-void readArrayFromFile(double* arr, int& size, const char* filename) {
+void readArrayFromFile(std::vector<double>& arr, const char* filename) {
     ifstream inFile(filename); // Открываем файл для чтения
     if (!inFile) {
-        cerr << "Не удалось открыть файл для чтения!" << endl;
-        return;
+        throw runtime_error("Не удалось открыть файл для чтения!");
     }
 
     // Считываем размер массива
+    size_t size;
     inFile >> size;
+    arr.resize(size);  // Устанавливаем размер вектору
 
     // Читаем элементы массива
-    for (int i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         inFile >> arr[i];
     }
 
@@ -50,16 +60,24 @@ void readArrayFromFile(double* arr, int& size, const char* filename) {
 }
 
 // Функция для заполнения массива случайными числами
-void fillArray(double* arr, int size, double minVal, double maxVal) {
-    for (int i = 0; i < size; i++) {
-        arr[i] = minVal + (maxVal - minVal) * (rand() / (double)RAND_MAX);
+void fillArray(std::vector<double>& arr, double minVal, double maxVal) {
+    if (arr.empty()) {
+        throw invalid_argument("Массив не может быть пустым.");
+    }
+
+    for (double& val : arr) {
+        val = minVal + (maxVal - minVal) * (rand() / (double)RAND_MAX);
     }
 }
 
 // Функция для вывода массива на экран
-void printArray(const double* arr, int size) {
-    for (int i = 0; i < size; i++) {
-        cout << arr[i] << " ";
+void printArray(const std::vector<double>& arr) {
+    if (arr.empty()) {
+        throw invalid_argument("Массив не может быть пустым.");
+    }
+
+    for (double val : arr) {
+        cout << val << " ";
     }
     cout << endl;
 }

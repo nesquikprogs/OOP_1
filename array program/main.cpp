@@ -3,66 +3,55 @@
 #include <ctime>
 #include <cassert>
 #include "computations.h"
+#include <vector>
 
 using namespace std;
-
-// Функция для тестирования computeProduct с помощью assert
-void testComputeProduct() {
-    double arr1[] = {1.0, 2.0, 3.0, 4.0};
-    assert(computeProduct(arr1, 4) == 24.0);
-
-    double arr2[] = {0.5, 2.0, 2.0};
-    assert(computeProduct(arr2, 3) == 2.0);
-
-    double arr3[] = {10.0};
-    assert(computeProduct(arr3, 1) == 10.0);
-
-    double arr4[] = {0.0, 5.0, 6.0};
-    assert(computeProduct(arr4, 3) == 0.0);
-
-    cout << "Все тесты прошли успешно!" << endl;
-}
 
 int main() {
     setlocale(LC_ALL, "ru_RU.UTF-8"); // Установка русской локали для вывода текста в консоль
     srand(time(0)); // Инициализация генератора случайных чисел
 
-    // Пример записи и чтения массива из файла
-    int n;
-    double* arr;
+    try {
+        // Пример записи и чтения массива из файла
+        size_t n;
 
-    cout << "Введите количество элементов массива: ";
-    cin >> n;
-    
-    arr = new double[n];
-    
-    // Заполнение массива случайными числами
-    fillArray(arr, n, 1.0, 10.0);
-    
-    // Вывод массива
-    cout << "Сгенерированный массив: " << endl;
-    printArray(arr, n);
-    
-    // Записываем массив в файл
-    writeArrayToFile(arr, n, "array_data.txt");
+        cout << "Введите количество элементов массива: ";
+        cin >> n;
 
-    // Очистка массива
-    delete[] arr;
-    
-    // Чтение массива из файла
-    cout << "\nЧтение массива из файла:" << endl;
-    arr = new double[n];
-    int sizeFromFile;
-    readArrayFromFile(arr, sizeFromFile, "array_data.txt");
+        if (n <= 0) {
+            throw invalid_argument("Количество элементов массива должно быть положительным.");
+        }
 
-    // Вывод массива из файла
-    cout << "Массив из файла: " << endl;
-    printArray(arr, sizeFromFile);
+        // Используем vector вместо обычного массива
+        vector<double> arr(n);
 
-    // Вычисление и вывод произведения элементов
-    cout << "Произведение элементов массива: " << computeProduct(arr, sizeFromFile) << endl;
+        // Заполнение массива случайными числами
+        fillArray(arr, 1.0, 10.0);
 
-    delete[] arr;
-    
+        // Вывод массива
+        cout << "Сгенерированный массив: " << endl;
+        printArray(arr);
+
+        // Записываем массив в файл
+        writeArrayToFile(arr, "array_data.txt");
+
+        // Очистка массива
+        arr.clear();
+
+        // Чтение массива из файла
+        cout << "\nЧтение массива из файла:" << endl;
+        readArrayFromFile(arr, "array_data.txt");
+
+        // Вывод массива из файла
+        cout << "Массив из файла: " << endl;
+        printArray(arr);
+
+        // Вычисление и вывод произведения элементов
+        cout << "Произведение элементов массива: " << computeProduct(arr) << endl;
+
+    } catch (const exception& e) {
+        cerr << "Ошибка: " << e.what() << endl;
+    }
+
     return 0;
 }
