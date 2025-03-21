@@ -1,40 +1,65 @@
 #include "computations.h"
-#include <cstdlib>
-#include <ctime>
+#include <fstream>
 #include <iostream>
-#include <iomanip>  // Для контроля вывода
+#include <cstdlib>
+using namespace std;
 
-namespace ArrayUtils {
+// Функция для вычисления произведения элементов массива
+double computeProduct(const double* arr, int size) {
+    double product = 1.0;
+    for (int i = 0; i < size; i++) {
+        product *= arr[i];
+    }
+    return product;
+}
 
-    // Функция для вычисления произведения элементов массива
-    double computeProduct(const double* arr, int size) {
-        double product = 1.0;
-        for (int i = 0; i < size; i++) {
-            product *= arr[i];
-        }
-        return product;
+// Функция для записи массива в файл
+void writeArrayToFile(const double* arr, int size, const char* filename) {
+    ofstream outFile(filename); // Открываем файл для записи
+    if (!outFile) {
+        cerr << "Не удалось открыть файл для записи!" << endl;
+        return;
     }
 
-    // Функция для заполнения массива случайными числами в заданном диапазоне
-    void fillArray(double* arr, int size, double minVal, double maxVal) {
-        for (int i = 0; i < size; i++) {
-            arr[i] = minVal + (maxVal - minVal) * (rand() / (double)RAND_MAX);
-        }
+    // Записываем размер массива, затем сами элементы
+    outFile << size << endl;
+    for (int i = 0; i < size; i++) {
+        outFile << arr[i] << endl;
     }
 
-    // Функция для вывода массива на экран по 10 элементов в строке
-    void printArray(const double* arr, int size) {
-        for (int i = 0; i < size; i++) {
-            // Выводим 10 элементов в строке
-            std::cout << std::fixed << std::setprecision(2) << arr[i] << " "; // Ограничиваем вывод до 2 знаков после запятой
-            if ((i + 1) % 10 == 0) {
-                std::cout << std::endl; // Перенос строки после 10-го элемента
-            }
-        }
-        // Если осталось меньше 10 элементов, все равно завершаем вывод новой строкой
-        if (size % 10 != 0) {
-            std::cout << std::endl;
-        }
+    outFile.close();
+}
+
+// Функция для чтения массива из файла
+void readArrayFromFile(double* arr, int& size, const char* filename) {
+    ifstream inFile(filename); // Открываем файл для чтения
+    if (!inFile) {
+        cerr << "Не удалось открыть файл для чтения!" << endl;
+        return;
     }
 
+    // Считываем размер массива
+    inFile >> size;
+
+    // Читаем элементы массива
+    for (int i = 0; i < size; i++) {
+        inFile >> arr[i];
+    }
+
+    inFile.close();
+}
+
+// Функция для заполнения массива случайными числами
+void fillArray(double* arr, int size, double minVal, double maxVal) {
+    for (int i = 0; i < size; i++) {
+        arr[i] = minVal + (maxVal - minVal) * (rand() / (double)RAND_MAX);
+    }
+}
+
+// Функция для вывода массива на экран
+void printArray(const double* arr, int size) {
+    for (int i = 0; i < size; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
 }
