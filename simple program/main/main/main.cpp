@@ -1,9 +1,6 @@
-﻿// chcp 65001
-
-
-#include <iostream>
+﻿#include <iostream>
 #include <clocale>
-#include <iomanip> 
+#include <iomanip>
 #include "triangle.h" // Подключаем заголовочный файл
 #include <cassert>  // Для использования assert
 
@@ -35,20 +32,14 @@ int main() {
         return 1;
     }
 
-    // Проверка, что гипотенуза больше первого катета
-    assert(hypotenuse > leg1);  // Проверка 1
-
     // Вычисляем второй катет с помощью функций
     leg2 = calculateLeg(hypotenuse, leg1);
 
-    // Проверка, что второй катет не отрицателен
-    assert(leg2 >= 0);  // Проверка 2
-
-    // Вычислям радиус с помощью функций
+    // Вычисляем радиус с помощью функций
     radius = calculateRadius(hypotenuse, leg1, leg2);
 
-    // Проверка, что радиус не отрицателен
-    assert(radius >= 0);  // Проверка 3
+    // Выполняем проверки
+    checkAssertions(hypotenuse, leg1, leg2, radius);
 
     // Добавление UI
     cout << "\n";
