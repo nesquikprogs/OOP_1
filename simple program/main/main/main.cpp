@@ -7,7 +7,7 @@
 using namespace std;
 
 int main() {
-    setlocale(LC_ALL, "ru_RU.UTF-8"); // Устанавливаем локаль для корректного отображения текста
+    setlocale(LC_ALL, "ru"); // Устанавливаем локаль для корректного отображения текста
 
     double hypotenuse, leg1, leg2, radius; // Объявляем переменные для гипотенузы, катетов и радиуса
 
