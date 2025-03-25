@@ -5,7 +5,7 @@
 double calculateLeg(double hypotenuse, double leg1);
 double calculateRadius(double hypotenuse, double leg1, double leg2);
 
-// Объявляем функцию для выполнения всех проверок (для использования в main.cpp и triangle.cpp)
-void checkAssertions(double hypotenuse, double leg1, double leg2, double radius);
+// Объявляем функцию для выполнения всех проверок
+void runAssertions();
 
 #endif // TRIANGLE_H
