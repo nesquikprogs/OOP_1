@@ -1,57 +1,51 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <cassert>
-#include "computations.h"
-#include <vector>
+#include <locale>
 
 using namespace std;
 
+// Функция для заполнения массива случайными числами в заданном диапазоне
+void fillArray(double* arr, int size, double min, double max) {
+    for (int i = 0; i < size; ++i) {
+        arr[i] = min + (max - min) * (rand() / (RAND_MAX + 1.0));
+    }
+}
+
+// Функция для вывода массива по 10 элементов в строке
+void printArray(const double* arr, int size) {
+    for (int i = 0; i < size; ++i) {
+        cout << arr[i] << " ";
+        if ((i + 1) % 10 == 0) {
+            cout << endl;
+        }
+    }
+    cout << endl;
+}
+
 int main() {
-    setlocale(LC_ALL, "ru_RU.UTF-8"); // Установка русской локали для вывода текста в консоль
+    setlocale(LC_ALL, "ru_RU.UTF-8");
     srand(time(0)); // Инициализация генератора случайных чисел
 
-    try {
-        // Пример записи и чтения массива из файла
-        size_t n;
+    int n;
+    cout << "Введите размер массива: ";
+    cin >> n;
 
-        cout << "Введите количество элементов массива: ";
-        cin >> n;
-
-        if (n <= 0) {
-            throw invalid_argument("Количество элементов массива должно быть положительным.");
-        }
-
-        // Используем vector вместо обычного массива
-        vector<double> arr(n);
-
-        // Заполнение массива случайными числами
-        fillArray(arr, 1.0, 10.0);
-
-        // Вывод массива
-        cout << "Сгенерированный массив: " << endl;
-        printArray(arr);
-
-        // Записываем массив в файл
-        writeArrayToFile(arr, "array_data.txt");
-
-        // Очистка массива
-        arr.clear();
-
-        // Чтение массива из файла
-        cout << "\nЧтение массива из файла:" << endl;
-        readArrayFromFile(arr, "array_data.txt");
-
-        // Вывод массива из файла
-        cout << "Массив из файла: " << endl;
-        printArray(arr);
-
-        // Вычисление и вывод произведения элементов
-        cout << "Произведение элементов массива: " << computeProduct(arr) << endl;
-
-    } catch (const exception& e) {
-        cerr << "Ошибка: " << e.what() << endl;
+    if (n <= 0) {
+        cerr << "Ошибка: размер массива должен быть натуральным числом!" << endl;
+        return 1;
     }
 
+    double* arr = new double[n];
+
+    double min, max;
+    cout << "Введите диапазон случайных чисел (min max): ";
+    cin >> min >> max;
+
+    fillArray(arr, n, min, max);
+    cout << "Сгенерированный массив:\n";
+    printArray(arr, n);
+
+    delete[] arr; // Освобождаем память
     return 0;
 }
