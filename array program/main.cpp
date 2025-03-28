@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cassert> // Для использования assert
+#include <fstream>  // Для работы с файлами
 using namespace std;
 
 // Создаём пространство имён для модуля
@@ -58,6 +59,37 @@ namespace array_utils {
         cout << "Все тесты прошли успешно!" << endl;
     }
 
+    // Функция для записи массива в файл
+    void writeArrayToFile(const double* arr, int size, const string& filename) {
+        ofstream outFile(filename);
+        if (!outFile) {
+            cerr << "Не удалось открыть файл для записи!" << endl;
+            return;
+        }
+
+        for (int i = 0; i < size; ++i) {
+            outFile << arr[i] << endl;  // Записываем каждый элемент массива в новый строку
+        }
+        outFile.close();
+        cout << "Массив успешно записан в файл " << filename << endl;
+    }
+
+    // Функция для чтения массива из файла
+    void readArrayFromFile(double* arr, int& size, const string& filename) {
+        ifstream inFile(filename);
+        if (!inFile) {
+            cerr << "Не удалось открыть файл для чтения!" << endl;
+            return;
+        }
+
+        int index = 0;
+        while (inFile >> arr[index]) {
+            ++index;
+        }
+        size = index;  // Устанавливаем размер массива
+        inFile.close();
+        cout << "Массив успешно загружен из файла " << filename << endl;
+    }
 }
 
 int main() {
@@ -99,10 +131,26 @@ int main() {
     cout << "Массив элементов:" << endl;
     array_utils::printArray(arr, size);
 
+    // Записываем массив в файл
+    string filename = "array_data.txt";
+    array_utils::writeArrayToFile(arr, size, filename);
+
+    // Создаём новый массив для чтения данных из файла
+    double* arrFromFile = new double[size];
+
+    // Загружаем массив из файла
+    array_utils::readArrayFromFile(arrFromFile, size, filename);
+
+    // Выводим массив из файла
+    cout << "Массив, загруженный из файла:" << endl;
+    array_utils::printArray(arrFromFile, size);
+
     // Вычисляем произведение элементов массива
-    double product = array_utils::calculateProduct(arr, size);
+    double product = array_utils::calculateProduct(arrFromFile, size);
     cout << "Произведение элементов массива: " << product << endl;
 
-    delete[] arr; // Освобождаем память
+    // Освобождаем память
+    delete[] arr;
+    delete[] arrFromFile;
     return 0;
 }
