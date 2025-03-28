@@ -36,41 +36,38 @@ int main() {
         return 1;
     }
 
-    double* arr = new double[size]; // Выделяем память под массив
+    // Используем vector вместо обычного массива
+    vector<double> arr(size);
 
     // Заполняем массив случайными числами
     // Передаем аргументы - изначальный массив, размер, мин.знач, макс.знач
-    array_utils::fillArray(arr, size, min, max);
+    array_utils::fillArray(arr, min, max);
 
     // Выводим массив
-    // В функцию передаем аргументы - изнчальный массив, размер
+    // В функцию передаем аргументы - изначальный массив, размер
     cout << "Массив элементов:" << endl;
-    array_utils::printArray(arr, size);
+    array_utils::printArray(arr);
 
     // Записываем массив в файл
     // В функцию передаем аргументы - изначальный массив, размер, имя файла для записи
     string filename = "array_data.txt";
-    array_utils::writeArrayToFile(arr, size, filename);
-
-    // Выделяем память под новый массив для чтения данных из файла
-    double* arrFromFile = new double[size];
+    array_utils::writeArrayToFile(arr, filename);
 
     // Загружаем массив из файла
     // В функцию передаем аргументы - массив из файла, размер, имя файла для записи
-    array_utils::readArrayFromFile(arrFromFile, size, filename);
+    vector<double> arrFromFile(size);
+
+    array_utils::readArrayFromFile(arrFromFile, filename);
 
     // Выводим массив из файла
     // В функцию передаем аргументы - массив из файла, размер
     cout << "Массив, загруженный из файла:" << endl;
-    array_utils::printArray(arrFromFile, size);
+    array_utils::printArray(arrFromFile);
 
     // Вычисляем произведение элементов массива
     // В функцию передаем аргументы - массив из файла, размер
-    double product = array_utils::calculateProduct(arrFromFile, size);
+    double product = array_utils::calculateProduct(arrFromFile);
     cout << "Произведение элементов массива: " << product << endl;
 
-    // Освобождаем память от обоих массивов
-    delete[] arr;
-    delete[] arrFromFile;
     return 0;
 }
