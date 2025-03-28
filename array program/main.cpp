@@ -3,6 +3,7 @@
 #include <ctime>
 #include <cassert> // Для использования assert
 #include <fstream>  // Для работы с файлами
+#include <stdexcept> // Для исключений
 using namespace std;
 
 // Создаём пространство имён для модуля
@@ -63,8 +64,7 @@ namespace array_utils {
     void writeArrayToFile(const double* arr, int size, const string& filename) {
         ofstream outFile(filename);
         if (!outFile) {
-            cerr << "Не удалось открыть файл для записи!" << endl;
-            return;
+            throw runtime_error("Не удалось открыть файл для записи!");
         }
 
         for (int i = 0; i < size; ++i) {
@@ -78,8 +78,7 @@ namespace array_utils {
     void readArrayFromFile(double* arr, int& size, const string& filename) {
         ifstream inFile(filename);
         if (!inFile) {
-            cerr << "Не удалось открыть файл для чтения!" << endl;
-            return;
+            throw runtime_error("Не удалось открыть файл для чтения!");
         }
 
         int index = 0;
@@ -98,59 +97,63 @@ int main() {
     // Запускаем все тесты на вычисление произведения
     array_utils::testCalculateProduct();
 
-    // Размер массива, вводимый пользователем
-    int size;
-    cout << "Введите размер массива: ";
-    cin >> size; // Пользователь вводит размер массива
+    try {
+        // Размер массива, вводимый пользователем
+        int size;
+        cout << "Введите размер массива: ";
+        cin >> size; // Пользователь вводит размер массива
 
-    // Проверка на корректность введённого размера массива
-    if (size <= 0) {
-        cout << "Размер массива должен быть положительным числом!" << endl;
-        return 1;
+        // Проверка на корректность введённого размера массива
+        if (size <= 0) {
+            throw invalid_argument("Размер массива должен быть положительным числом!");
+        }
+
+        // Ввод минимального и максимального значений
+        double min, max;
+        cout << "Введите минимальное значение: ";
+        cin >> min;
+        cout << "Введите максимальное значение: ";
+        cin >> max;
+
+        // Проверка, чтобы максимальное значение было больше минимального
+        if (min >= max) {
+            throw invalid_argument("Минимальное значение должно быть меньше максимального!");
+        }
+
+        double* arr = new double[size]; // Выделяем память под массив
+
+        // Заполняем массив случайными числами
+        array_utils::fillArray(arr, size, min, max);
+
+        // Выводим массив
+        cout << "Массив элементов:" << endl;
+        array_utils::printArray(arr, size);
+
+        // Записываем массив в файл
+        string filename = "array_data.txt";
+        array_utils::writeArrayToFile(arr, size, filename);
+
+        // Создаём новый массив для чтения данных из файла
+        double* arrFromFile = new double[size];
+
+        // Загружаем массив из файла
+        array_utils::readArrayFromFile(arrFromFile, size, filename);
+
+        // Выводим массив из файла
+        cout << "Массив, загруженный из файла:" << endl;
+        array_utils::printArray(arrFromFile, size);
+
+        // Вычисляем произведение элементов массива
+        double product = array_utils::calculateProduct(arrFromFile, size);
+        cout << "Произведение элементов массива: " << product << endl;
+
+        // Освобождаем память
+        delete[] arr;
+        delete[] arrFromFile;
+
+    } catch (const exception& e) {
+        cout << "Ошибка: " << e.what() << endl;
     }
 
-    // Ввод минимального и максимального значений
-    double min, max;
-    cout << "Введите минимальное значение: ";
-    cin >> min;
-    cout << "Введите максимальное значение: ";
-    cin >> max;
-
-    // Проверка, чтобы максимальное значение было больше минимального
-    if (min >= max) {
-        cout << "Минимальное значение должно быть меньше максимального!" << endl;
-        return 1;
-    }
-
-    double* arr = new double[size]; // Выделяем память под массив
-
-    // Заполняем массив случайными числами
-    array_utils::fillArray(arr, size, min, max);
-
-    // Выводим массив
-    cout << "Массив элементов:" << endl;
-    array_utils::printArray(arr, size);
-
-    // Записываем массив в файл
-    string filename = "array_data.txt";
-    array_utils::writeArrayToFile(arr, size, filename);
-
-    // Создаём новый массив для чтения данных из файла
-    double* arrFromFile = new double[size];
-
-    // Загружаем массив из файла
-    array_utils::readArrayFromFile(arrFromFile, size, filename);
-
-    // Выводим массив из файла
-    cout << "Массив, загруженный из файла:" << endl;
-    array_utils::printArray(arrFromFile, size);
-
-    // Вычисляем произведение элементов массива
-    double product = array_utils::calculateProduct(arrFromFile, size);
-    cout << "Произведение элементов массива: " << product << endl;
-
-    // Освобождаем память
-    delete[] arr;
-    delete[] arrFromFile;
     return 0;
 }
