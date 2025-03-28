@@ -1,20 +1,19 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <locale>
-
 using namespace std;
 
-// Функция для заполнения массива случайными числами в заданном диапазоне
+// Функция для заполнения массива случайными числами
 void fillArray(double* arr, int size, double min, double max) {
     for (int i = 0; i < size; ++i) {
         arr[i] = min + (max - min) * (rand() / (RAND_MAX + 1.0));
     }
 }
 
-// Функция для вывода массива по 10 элементов в строке
+// Функция для вывода массива
 void printArray(const double* arr, int size) {
     for (int i = 0; i < size; ++i) {
+        cout.width(8); // Выделяем место для выравнивания чисел
         cout << arr[i] << " ";
         if ((i + 1) % 10 == 0) {
             cout << endl;
@@ -23,28 +22,42 @@ void printArray(const double* arr, int size) {
     cout << endl;
 }
 
+// Функция для вычисления произведения элементов массива
+double calculateProduct(const double* arr, int size) {
+    double product = 1.0; // Начинаем с единицы, чтобы не обнулять произведение
+    for (int i = 0; i < size; ++i) {
+        product *= arr[i]; // Умножаем каждый элемент на текущее произведение
+    }
+    return product;
+}
+
 int main() {
-    setlocale(LC_ALL, "ru_RU.UTF-8");
     srand(time(0)); // Инициализация генератора случайных чисел
 
-    int n;
+    int size; // Размер массива, вводимый пользователем
     cout << "Введите размер массива: ";
-    cin >> n;
+    cin >> size; // Пользователь вводит размер массива
 
-    if (n <= 0) {
-        cerr << "Ошибка: размер массива должен быть натуральным числом!" << endl;
+    // Проверка на корректность введённого размера массива
+    if (size <= 0) {
+        cout << "Размер массива должен быть положительным числом!" << endl;
         return 1;
     }
 
-    double* arr = new double[n];
+    double min = 1.0, max = 10.0; // Диапазон для случайных чисел
 
-    double min, max;
-    cout << "Введите диапазон случайных чисел (min max): ";
-    cin >> min >> max;
+    double* arr = new double[size]; // Выделяем память под массив
 
-    fillArray(arr, n, min, max);
-    cout << "Сгенерированный массив:\n";
-    printArray(arr, n);
+    // Заполняем массив случайными числами
+    fillArray(arr, size, min, max);
+
+    // Выводим массив
+    cout << "Массив элементов:" << endl;
+    printArray(arr, size);
+
+    // Вычисляем произведение элементов массива
+    double product = calculateProduct(arr, size);
+    cout << "Произведение элементов массива: " << product << endl;
 
     delete[] arr; // Освобождаем память
     return 0;
