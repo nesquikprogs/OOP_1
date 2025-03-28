@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <cassert> // Для использования assert
 using namespace std;
 
 // Функция для заполнения массива случайными числами
@@ -31,10 +32,37 @@ double calculateProduct(const double* arr, int size) {
     return product;
 }
 
+// Тестирование функции calculateProduct
+void testCalculateProduct() {
+    // Тест 1: Массив с положительными числами
+    assert(calculateProduct(new double[3]{2.0, 3.0, 4.0}, 3) == 24.0); // 2 * 3 * 4 = 24.0
+
+    // Тест 2: Массив с нулями
+    assert(calculateProduct(new double[3]{0.0, 3.0, 5.0}, 3) == 0.0); // 0 * 3 * 5 = 0.0
+
+    // Тест 3: Массив с одним элементом
+    assert(calculateProduct(new double[1]{5.0}, 1) == 5.0); // 5.0
+
+    // Тест 4: Массив с отрицательными числами
+    assert(calculateProduct(new double[3]{-2.0, 3.0, -4.0}, 3) == 24.0); // (-2) * 3 * (-4) = 24.0
+
+    // Тест 5: Массив с одним нулём
+    assert(calculateProduct(new double[1]{0.0}, 1) == 0.0); // 0.0
+
+    // Тест 6: Массив с несколькими отрицательными числами
+    assert(calculateProduct(new double[3]{-1.0, -2.0, -3.0}, 3) == -6.0); // (-1) * (-2) * (-3) = -6.0
+
+    cout << "Все тесты прошли успешно!" << endl;
+}
+
 int main() {
     srand(time(0)); // Инициализация генератора случайных чисел
 
-    int size; // Размер массива, вводимый пользователем
+    // Запускаем все тесты на вычисление произведения
+    testCalculateProduct();
+
+    // Размер массива, вводимый пользователем
+    int size;
     cout << "Введите размер массива: ";
     cin >> size; // Пользователь вводит размер массива
 
@@ -44,7 +72,18 @@ int main() {
         return 1;
     }
 
-    double min = 1.0, max = 10.0; // Диапазон для случайных чисел
+    // Ввод минимального и максимального значений
+    double min, max;
+    cout << "Введите минимальное значение: ";
+    cin >> min;
+    cout << "Введите максимальное значение: ";
+    cin >> max;
+
+    // Проверка, чтобы максимальное значение было больше минимального
+    if (min >= max) {
+        cout << "Минимальное значение должно быть меньше максимального!" << endl;
+        return 1;
+    }
 
     double* arr = new double[size]; // Выделяем память под массив
 
